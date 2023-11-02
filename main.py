@@ -15,6 +15,9 @@ import string
 # Um Permutationen (Kombinierungen) mit Zeichen zu ermöglichen
 import itertools
 
+import sounds
+import threading
+
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ FUNKTIONEN ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 def auto_format_ausgabe_titel(schrift):
@@ -40,8 +43,9 @@ def auto_format_ausgabe_titel(schrift):
     kr = "]"
 
     # Ausgabe
-    print(f"{a*seitlich}{kl} {schrift:{lang}} {kr}{b*seitlich}")
-    print(c*100)
+    print(f"{a * seitlich}{kl} {schrift:{lang}} {kr}{b * seitlich}")
+    print(c * 100)
+
 
 def info():
     """
@@ -60,6 +64,7 @@ def info():
      _________________________________________________________________________________________________________________
     """
 
+
 def check_pfad():
     print("Log: [Check Pfad]")
     """
@@ -77,7 +82,7 @@ def check_pfad():
             pfad = pfad.replace('"', "")
             open(pfad)
             auto_format_ausgabe_titel("Diese Pfad ist verfügbar! Datei wurde gefunden. Zum starten [Enter] drücken: ")
-            input()
+            sounds.spiele_success()
             return pfad
         except FileNotFoundError:
             print("Der angegebene Pfad konnte nicht gefunden werden!")
@@ -87,6 +92,7 @@ def check_pfad():
         except KeyboardInterrupt:
             print()
             sys.exit("Beendet durch benutzer.")
+
 
 def passwort_pdf_generator(pfad):
     """
@@ -158,18 +164,26 @@ def passwort_pdf_generator(pfad):
                 # Ausgabe
                 print("Teste mit: ", PASSWORD)
 
-def main():
-    # Information zur benutzung ausgeben
+
+# Diese Funktion spielt den Slam-Sound einmal ab
+def spiele_typing():
+    print("Log: [Starte typing Sound...]")
+    dateipfad = "audio/typing.mp3"  # Dateipfad für den Slam-Sound
+    sounds.spiele_audio(dateipfad)  # Rufe die Funktion auf, um den Slam-Sound abzuspielen
+    print("Log: [Beende typing Sound...]")
+
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+if __name__ == "__main__":
     print(info.__doc__)
+    sounds.spiele_wind()
 
     # Funktionsaufruf Pfad überprüfen.
     PFAD = check_pfad()
 
-    # Funktionsaufruf Passwort generieren
+    th = threading.Thread(target=spiele_typing)
+    th.start()
+
     passwort_pdf_generator(PFAD)
 
     input("Zum Beenden beliebige Taste drücken: ")
-
-
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-main()
