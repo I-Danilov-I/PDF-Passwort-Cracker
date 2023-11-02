@@ -5,6 +5,7 @@ import datetime
 
 # Modul: zum Arbeiten mit dem OS
 import sys
+import threading
 
 # Modul: zum Lesen und Schreiben von PDF-Dateien
 import pikepdf
@@ -16,7 +17,8 @@ import string
 import itertools
 
 # Ausgelegte Datei für das Abspielen von Soundeffekten
-import sounds
+from sounds import spiele_tippen, spiele_slam, spiele_wind, spiele_hintergrund
+
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ FUNKTIONEN ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 def auto_format_ausgabe_titel(schrift):
@@ -156,8 +158,6 @@ def passwort_pdf_generator(pfad):
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# Nachdem der Pfad überprüft wurde, erstelle Threads für die Audiowiedergabe
-
 # Variable versuchszähler
 anzahl_versuche = 0
 
