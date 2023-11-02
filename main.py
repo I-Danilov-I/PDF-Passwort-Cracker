@@ -1,9 +1,12 @@
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ MODULE ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# Modul: zum arbeiten mit Datum und Zeit
+
+# Modul: zum Arbeiten mit Datum und Zeit
 import datetime
 
 # Modul: zum Arbeiten mit dem OS
 import sys
+
+import threading
 
 # Modul: zum Lesen und Schreiben von PDF-Dateien
 import pikepdf
@@ -14,6 +17,8 @@ import string
 # Um Permutationen (Kombinierungen) mit Zeichen zu ermöglichen
 import itertools
 
+# Ausgelegte Datei für das Abspielen von Soundeffekten
+import sounds
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ FUNKTIONEN ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 def auto_format_ausgabe_titel(schrift):
@@ -29,7 +34,7 @@ def auto_format_ausgabe_titel(schrift):
     seitlich = int(seitlich)
 
     # Maßen ausgaben (Nur bei änderungen Nötig)
-    # print("Mitte Länge:", lang, seitlich, "Pro seite")
+    # print("Mitte Länge: ", lang, seitlich, "Pro seite")
 
     # Zeichen die für die Formatierung verwendet werden
     a = "<"
@@ -42,12 +47,11 @@ def auto_format_ausgabe_titel(schrift):
     print(f"{a*seitlich}{kl} {schrift:{lang}} {kr}{b*seitlich}")
     print(c*100)
 
-
 def info():
     """
-    <<<<<<<<<<[ Das Programm ist ausschließlich für Übungszwecke, verständnislos und lernzwecke gedacht! ]>>>>>>>>>>
+    <<<<<<<<<<[Das Programm ist ausschließlich für Übungszwecke, verständnislos und lernzwecke gedacht! ]>>>>>>>>>>
 
-    So finden sie den Pfad zu ihrer verschlüsselten PDF-Datei.
+    So finden Sie den Pfad zu ihrer verschlüsselten PDF-Datei.
     _________________________________________________________________________________________________________________
     1. Drücken Sie die Schifft_Taste ⍐ (Links auf der Tastatur Pfeil nach oben),
         dann mit rechtsklick auf die PDF-Datei, die Entschlüsselt werden soll.
@@ -60,8 +64,8 @@ def info():
      _________________________________________________________________________________________________________________
     """
 
-
 def check_pfad():
+    print("Check Pfad")
     """
     Funktion prüft, ob der Pfad vorhanden ist bevor die Permutation beginnen kann.
 
@@ -77,8 +81,8 @@ def check_pfad():
             pfad = pfad.replace('"', "")
             open(pfad)
             auto_format_ausgabe_titel("Diese Pfad ist verfügbar! Datei wurde gefunden. Zum starten [Enter] drücken: ")
+            sounds.spiele_erfolg()
             input()
-
             return pfad
         except FileNotFoundError:
             print("Der angegebene Pfad konnte nicht gefunden werden!")
@@ -89,12 +93,11 @@ def check_pfad():
             print()
             sys.exit("Beendet durch benutzer.")
 
-
 def passwort_pdf_generator(pfad):
     """
     Die product()-Methode kann anstelle der for-Schleife verwendet werden. Es ist prägnant und viel schneller.
     IterTools product()-Methode vs. for-Schleife
-    Die itertools product()-Methode kann anstelle der for-Schleife verwendet werden. Es ist viel schneller hat
+    die itertools product()-Methode kann anstelle der for-Schleife verwendet werden. Es ist viel schneller hat
     minimale Code-Unordnung. Da itertools product() Methode einen Iterator gibt, der nur einen Wert nach
     dem anderen zurückgibt; nur auf Abruf.
 
@@ -156,18 +159,21 @@ def passwort_pdf_generator(pfad):
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# Versuchszähler
+# Nachdem der Pfad überprüft wurde, erstelle Threads für die Audiowiedergabe
+
+# Variable versuchszähler
 anzahl_versuche = 0
 
-# In dieser Variable sind alle Buchstaben, Zahlen und Zeichen definiert
+# Variable für Zeichengruppen
 ZEICHEN = string.ascii_lowercase + string.digits + string.punctuation
 
-# Anleitung ausgeben
+# Information zur benutzung ausgeben
 print(info.__doc__)
 
-# Rückgabewert in der Var speichern, um wiederzuverwenden.
+# Funktionsaufruf Pfad überprüfen.
 PFAD = check_pfad()
 
-# Passwort generieren
+# Funktionsaufruf Passwort generieren
 passwort_pdf_generator(PFAD)
-input("Zum beenden beliebige Taste Drücken: ")
+
+input("Zum Beenden beliebige Taste drücken: ")
