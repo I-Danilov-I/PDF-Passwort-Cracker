@@ -1,11 +1,10 @@
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ MODULE ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ MAIN.py ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 # Modul: zum Arbeiten mit Datum und Zeit
 import datetime
 
 # Modul: zum Arbeiten mit dem OS
 import sys
-import threading
 
 # Modul: zum Lesen und Schreiben von PDF-Dateien
 import pikepdf
@@ -15,9 +14,6 @@ import string
 
 # Um Permutationen (Kombinierungen) mit Zeichen zu ermöglichen
 import itertools
-
-# Ausgelegte Datei für das Abspielen von Soundeffekten
-from sounds import spiele_tippen, spiele_slam, spiele_wind, spiele_hintergrund
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ FUNKTIONEN ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -65,7 +61,7 @@ def info():
     """
 
 def check_pfad():
-    print("Check Pfad")
+    print("Log: [Check Pfad]")
     """
     Funktion prüft, ob der Pfad vorhanden ist bevor die Permutation beginnen kann.
 
@@ -112,7 +108,13 @@ def passwort_pdf_generator(pfad):
         Wiederholungsparameter angegeben sind.
     """
 
-    global anzahl_versuche
+    print("Log: [passwort_pdf_generator]")
+
+    # Variable versuchszähler
+    anzahl_versuche = 0
+
+    # Variable für Zeichengruppen
+    ZEICHEN = string.ascii_lowercase + string.digits + string.punctuation
 
     # Zeitstempel vor dem Start
     start = datetime.datetime.now()
@@ -156,21 +158,18 @@ def passwort_pdf_generator(pfad):
                 # Ausgabe
                 print("Teste mit: ", PASSWORD)
 
+def main():
+    # Information zur benutzung ausgeben
+    print(info.__doc__)
+
+    # Funktionsaufruf Pfad überprüfen.
+    PFAD = check_pfad()
+
+    # Funktionsaufruf Passwort generieren
+    passwort_pdf_generator(PFAD)
+
+    input("Zum Beenden beliebige Taste drücken: ")
+
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# Variable versuchszähler
-anzahl_versuche = 0
-
-# Variable für Zeichengruppen
-ZEICHEN = string.ascii_lowercase + string.digits + string.punctuation
-
-# Information zur benutzung ausgeben
-print(info.__doc__)
-
-# Funktionsaufruf Pfad überprüfen.
-PFAD = check_pfad()
-
-# Funktionsaufruf Passwort generieren
-passwort_pdf_generator(PFAD)
-
-input("Zum Beenden beliebige Taste drücken: ")
+main()
