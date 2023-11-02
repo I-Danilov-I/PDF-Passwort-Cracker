@@ -6,8 +6,6 @@ import datetime
 # Modul: zum Arbeiten mit dem OS
 import sys
 
-import threading
-
 # Modul: zum Lesen und Schreiben von PDF-Dateien
 import pikepdf
 
@@ -81,7 +79,6 @@ def check_pfad():
             pfad = pfad.replace('"', "")
             open(pfad)
             auto_format_ausgabe_titel("Diese Pfad ist verfügbar! Datei wurde gefunden. Zum starten [Enter] drücken: ")
-            sounds.spiele_erfolg()
             input()
             return pfad
         except FileNotFoundError:
