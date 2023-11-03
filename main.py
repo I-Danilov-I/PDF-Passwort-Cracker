@@ -33,7 +33,6 @@ def spiele_slam():
     audio_funktionen.spiele_slam()
 
 
-
 def auto_format_ausgabe_titel(schrift):
     """
     Formatiert automatisch überschriften.
@@ -88,19 +87,20 @@ def check_pfad():
     """
     while True:
         try:
-            # Funktion: Als Par. wird String übergeben der dann formatiert wird und dann ausgeben.
+            # Funktion: Als Par. wird String übergeben der dann formatiert wird und dann ausgeben
             auto_format_ausgabe_titel("Bitte geben sie den Pfad zu ihrer PDF-Datei")
 
-            # Audioeffekt im Threading damit input zu gleichen Zeit mit dem Effekt erschein.
+            # Audioeffekt im Threading damit input zu gleichen Zeit mit dem Effekt erschein
             spiele_slam_th = threading.Thread(target=spiele_slam)
             spiele_slam_th.start()
 
+            # Hier wird der Pfad zu der Passwort geschützen PDF von Benutzer abgefragt
             pfad = input("EINGABE hier:")
             print()
-            input(":")
+
             pfad = pfad.replace('"', "")
             open(pfad)
-            auto_format_ausgabe_titel("Diese Pfad ist verfügbar! Datei wurde gefunden. Zum starten [Enter] drücken: ")
+            auto_format_ausgabe_titel("Diese Pfad ist verfügbar!")
             audio_funktionen.spiele_success()
             return pfad
         except FileNotFoundError:
@@ -171,6 +171,10 @@ def passwort_pdf_generator(pfad):
                 audio_funktionen.spiele_success()
                 with open("PASSWORD_HIER.txt", "w") as txt_file:
                     txt_file.writelines("Datei Pfad:" + "\n" + pfad + "\n" "PASSWORT:" + PASSWORD)
+
+                    # Audioeffekt im Threading damit input zu gleichen Zeit mit dem Effekt erschein
+                    spiele_slam_th = threading.Thread(target=spiele_slam)
+                    spiele_slam_th.start()
                     input("Zum beenden drücken sie beliebige taste: ")
                     print()
                     sys.exit("Passwort im Aktuellen Verzeichnis gespeichert! \n")
