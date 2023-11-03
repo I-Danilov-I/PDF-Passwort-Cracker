@@ -1,4 +1,4 @@
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ MAIN.py ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ main.py ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 # Modul: zum Arbeiten mit Datum und Zeit
 import datetime
@@ -15,11 +15,25 @@ import string
 # Um Permutationen (Kombinierungen) mit Zeichen zu ermöglichen
 import itertools
 
+
 import audio_funktionen
 import threading
 
-
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ FUNKTIONEN ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+# Diese Funktion spielt den Slam-Sound einmal ab
+def spiele_typing():
+    # print("Log: [Starte typing Sound...]")
+    dateipfad = "audio/typing.mp3"  # Dateipfad für den Slam-Sound
+    audio_funktionen.spiele_audio(dateipfad)  # Rufe die Funktion auf, um den Slam-Sound abzuspielen
+    # print("Log: [Beende typing Sound...]")
+
+
+def spiele_slam():
+    audio_funktionen.spiele_slam()
+
+
+
 def auto_format_ausgabe_titel(schrift):
     """
     Formatiert automatisch überschriften.
@@ -46,7 +60,6 @@ def auto_format_ausgabe_titel(schrift):
     print(f"{a * seitlich}{kl} {schrift:{lang}} {kr}{b * seitlich}")
     print(c * 100)
 
-
 def info():
     """
     <<<<<<<<<<[Das Programm ist ausschließlich für Übungszwecke, verständnislos und lernzwecke gedacht! ]>>>>>>>>>>
@@ -64,9 +77,8 @@ def info():
      _________________________________________________________________________________________________________________
     """
 
-
 def check_pfad():
-    print("Log: [Check Pfad]")
+    # print("Log: [Check Pfad]")
     """
     Funktion prüft, ob der Pfad vorhanden ist bevor die Permutation beginnen kann.
 
@@ -76,9 +88,16 @@ def check_pfad():
     """
     while True:
         try:
+            # Funktion: Als Par. wird String übergeben der dann formatiert wird und dann ausgeben.
             auto_format_ausgabe_titel("Bitte geben sie den Pfad zu ihrer PDF-Datei")
+
+            # Audioeffekt im Threading damit input zu gleichen Zeit mit dem Effekt erschein.
+            spiele_slam_th = threading.Thread(target=spiele_slam)
+            spiele_slam_th.start()
+
             pfad = input("EINGABE hier:")
             print()
+            input(":")
             pfad = pfad.replace('"', "")
             open(pfad)
             auto_format_ausgabe_titel("Diese Pfad ist verfügbar! Datei wurde gefunden. Zum starten [Enter] drücken: ")
@@ -92,7 +111,6 @@ def check_pfad():
         except KeyboardInterrupt:
             print()
             sys.exit("Beendet durch benutzer.")
-
 
 def passwort_pdf_generator(pfad):
     """
@@ -114,7 +132,7 @@ def passwort_pdf_generator(pfad):
         Wiederholungsparameter angegeben sind.
     """
 
-    print("Log: [passwort_pdf_generator]")
+    # print("Log: [passwort_pdf_generator]")
 
     # Variable versuchszähler
     anzahl_versuche = 0
@@ -150,7 +168,7 @@ def passwort_pdf_generator(pfad):
                 print("Beendet:", stop)
                 print("Gesamtdauer:", dauer)
                 print("_" * 100)
-
+                audio_funktionen.spiele_success()
                 with open("PASSWORD_HIER.txt", "w") as txt_file:
                     txt_file.writelines("Datei Pfad:" + "\n" + pfad + "\n" "PASSWORT:" + PASSWORD)
                     input("Zum beenden drücken sie beliebige taste: ")
@@ -163,14 +181,6 @@ def passwort_pdf_generator(pfad):
                 anzahl_versuche += 1
                 # Ausgabe
                 print("Teste mit: ", PASSWORD)
-
-
-# Diese Funktion spielt den Slam-Sound einmal ab
-def spiele_typing():
-    print("Log: [Starte typing Sound...]")
-    dateipfad = "audio/typing.mp3"  # Dateipfad für den Slam-Sound
-    audio_funktionen.spiele_audio(dateipfad)  # Rufe die Funktion auf, um den Slam-Sound abzuspielen
-    print("Log: [Beende typing Sound...]")
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
