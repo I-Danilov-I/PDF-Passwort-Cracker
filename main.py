@@ -16,23 +16,7 @@ import string
 import itertools
 
 
-import audio_funktionen
-import threading
-
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ FUNKTIONEN ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-# Diese Funktion spielt den Slam-Sound einmal ab
-def spiele_typing():
-    # print("Log: [Starte typing Sound...]")
-    dateipfad = "audio/typing.mp3"  # Dateipfad für den Slam-Sound
-    audio_funktionen.spiele_audio(dateipfad)  # Rufe die Funktion auf, um den Slam-Sound abzuspielen
-    # print("Log: [Beende typing Sound...]")
-
-
-def spiele_slam():
-    audio_funktionen.spiele_slam()
-
-
 def auto_format_ausgabe_titel(schrift):
     """
     Formatiert automatisch überschriften.
@@ -90,10 +74,6 @@ def check_pfad():
             # Funktion: Als Par. wird String übergeben der dann formatiert wird und dann ausgeben
             auto_format_ausgabe_titel("Bitte geben sie den Pfad zu ihrer PDF-Datei")
 
-            # Audioeffekt im Threading damit input zu gleichen Zeit mit dem Effekt erschein
-            spiele_slam_th = threading.Thread(target=spiele_slam)
-            spiele_slam_th.start()
-
             # Hier wird der Pfad zu der Passwort geschützen PDF von Benutzer abgefragt
             pfad = input("EINGABE hier:")
             print()
@@ -101,13 +81,13 @@ def check_pfad():
             pfad = pfad.replace('"', "")
             open(pfad)
             auto_format_ausgabe_titel("Diese Pfad ist verfügbar!")
-            audio_funktionen.spiele_success()
             return pfad
+
         except FileNotFoundError:
             print("Der angegebene Pfad konnte nicht gefunden werden!")
         except OSError:
             print("Der Pfad muss mit dem Laufwerk beginnen:\n"
-                  "zB. D:\order\datei.pdf ")
+                  "zB. D:\\order\\datei.pdf ")
         except KeyboardInterrupt:
             print()
             sys.exit("Beendet durch benutzer.")
@@ -168,13 +148,11 @@ def passwort_pdf_generator(pfad):
                 print("Beendet:", stop)
                 print("Gesamtdauer:", dauer)
                 print("_" * 100)
-                audio_funktionen.spiele_success()
+
                 with open("PASSWORD_HIER.txt", "w") as txt_file:
                     txt_file.writelines("Datei Pfad:" + "\n" + pfad + "\n" "PASSWORT:" + PASSWORD)
 
                     # Audioeffekt im Threading damit input zu gleichen Zeit mit dem Effekt erschein
-                    spiele_slam_th = threading.Thread(target=spiele_slam)
-                    spiele_slam_th.start()
                     input("Zum beenden drücken sie beliebige taste: ")
                     print()
                     sys.exit("Passwort im Aktuellen Verzeichnis gespeichert! \n")
@@ -190,14 +168,7 @@ def passwort_pdf_generator(pfad):
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 if __name__ == "__main__":
     print(info.__doc__)
-    audio_funktionen.spiele_wind()
-
     # Funktionsaufruf Pfad überprüfen.
     PFAD = check_pfad()
-
-    th = threading.Thread(target=spiele_typing)
-    th.start()
-
     passwort_pdf_generator(PFAD)
-
     input("Zum Beenden beliebige Taste drücken: ")
