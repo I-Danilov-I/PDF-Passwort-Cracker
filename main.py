@@ -80,7 +80,8 @@ def check_pfad():
 
             pfad = pfad.replace('"', "")
             open(pfad)
-            auto_format_ausgabe_titel("Diese Pfad ist verfügbar!")
+            auto_format_ausgabe_titel("Diese Pfad ist verfügbar! Programm ist bereit zum Start.")
+            input("Drücke [Enter] um den Hack zu starten:")
             return pfad
 
         except FileNotFoundError:
