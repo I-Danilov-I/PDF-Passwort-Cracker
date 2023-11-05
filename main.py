@@ -15,6 +15,17 @@ import string
 # Um Permutationen (Kombinierungen) mit Zeichen zu ermöglichen
 import itertools
 
+# Interagieren mit OS
+import os
+
+# Ausgelegte sound.py für die Soundwiedergabe
+import sounds
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ VARIABLEN ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# Den Arbeitsverzeichnispfad auf das Verzeichnis der ausführbaren Datei setzen
+working_directory = os.path.dirname(os.path.abspath(__file__))
+os.chdir(working_directory)
+
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ FUNKTIONEN ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 def auto_format_ausgabe_titel(schrift):
@@ -43,6 +54,7 @@ def auto_format_ausgabe_titel(schrift):
     print(f"{a * seitlich}{kl} {schrift:{lang}} {kr}{b * seitlich}")
     print(c * 100)
 
+
 def info():
     """
     <<<<<<<<<<[Das Programm ist ausschließlich für Übungszwecke, verständnislos und lernzwecke gedacht! ]>>>>>>>>>>
@@ -59,6 +71,7 @@ def info():
     Maximale Passwort Länge: 9 Stellen
      _________________________________________________________________________________________________________________
     """
+
 
 def check_pfad():
     # print("Log: [Check Pfad]")
@@ -77,7 +90,6 @@ def check_pfad():
             # Hier wird der Pfad zu der Passwort geschützen PDF von Benutzer abgefragt
             pfad = input("EINGABE hier:")
             print()
-
             pfad = pfad.replace('"', "")
             open(pfad)
             auto_format_ausgabe_titel("Diese Pfad ist verfügbar! Programm ist bereit zum Start.")
@@ -86,12 +98,12 @@ def check_pfad():
 
         except FileNotFoundError:
             print("Der angegebene Pfad konnte nicht gefunden werden!")
+            print()
         except OSError:
             print("Der Pfad muss mit dem Laufwerk beginnen:\n"
-                  "zB. D:\\order\\datei.pdf ")
-        except KeyboardInterrupt:
+                  "zB. 'D:\\order\\datei.pdf' ")
             print()
-            sys.exit("Beendet durch benutzer.")
+
 
 def passwort_pdf_generator(pfad):
     """
@@ -124,6 +136,8 @@ def passwort_pdf_generator(pfad):
     # Zeitstempel vor dem Start
     start = datetime.datetime.now()
 
+    sounds.audio_play("audio/typing.mp3")
+
     # Suche nach nummer zwischen 0 und 9 und füge sie als parameter damit wird die Länge der Permutation bestimmt
     for nummern in range(0, 10):
         # Permutation mit den Zeichen aus der Liste ZEICHEN
@@ -150,10 +164,10 @@ def passwort_pdf_generator(pfad):
                 print("Gesamtdauer:", dauer)
                 print("_" * 100)
 
+                sounds.stop_audio_playback()
+
                 with open("PASSWORD_HIER.txt", "w") as txt_file:
                     txt_file.writelines("Datei Pfad:" + "\n" + pfad + "\n" "PASSWORT:" + PASSWORD)
-
-                    # Audioeffekt im Threading damit input zu gleichen Zeit mit dem Effekt erschein
                     input("Zum beenden drücken sie beliebige taste: ")
                     print()
                     sys.exit("Passwort im Aktuellen Verzeichnis gespeichert! \n")
@@ -167,9 +181,15 @@ def passwort_pdf_generator(pfad):
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-if __name__ == "__main__":
-    print(info.__doc__)
-    # Funktionsaufruf Pfad überprüfen.
-    PFAD = check_pfad()
-    passwort_pdf_generator(PFAD)
-    input("Zum Beenden beliebige Taste drücken: ")
+def main():
+    try:
+        print(info.__doc__)
+        PFAD = check_pfad()
+        passwort_pdf_generator(PFAD)
+        input("Zum Beenden beliebige Taste drücken: ")
+    except KeyboardInterrupt:
+        print()
+        sys.exit("KeyboardInterrupt. Beenden durch den Benutzer.")
+
+
+main()
