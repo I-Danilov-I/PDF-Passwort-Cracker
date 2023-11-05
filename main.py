@@ -54,8 +54,8 @@ def auto_format_ausgabe_titel(schrift):
     print(f"{a * seitlich}{kl} {schrift:{lang}} {kr}{b * seitlich}")
     print(c * 100)
 
-
 def info():
+
     """
     <<<<<<<<<<[Das Programm ist ausschließlich für Übungszwecke, verständnislos und lernzwecke gedacht! ]>>>>>>>>>>
 
@@ -72,7 +72,6 @@ def info():
      _________________________________________________________________________________________________________________
     """
 
-
 def check_pfad():
     # print("Log: [Check Pfad]")
     """
@@ -84,7 +83,10 @@ def check_pfad():
     """
     while True:
         try:
+            sounds.audio_play("audio/slam.mp3")
             # Funktion: Als Par. wird String übergeben der dann formatiert wird und dann ausgeben
+            print()
+            print()
             auto_format_ausgabe_titel("Bitte geben sie den Pfad zu ihrer PDF-Datei")
 
             # Hier wird der Pfad zu der Passwort geschützen PDF von Benutzer abgefragt
@@ -92,6 +94,10 @@ def check_pfad():
             print()
             pfad = pfad.replace('"', "")
             open(pfad)
+
+            # AUDIO:
+            sounds.audio_play("audio/accept.mp3")
+
             auto_format_ausgabe_titel("Diese Pfad ist verfügbar! Programm ist bereit zum Start.")
             input("Drücke [Enter] um den Hack zu starten:")
             return pfad
@@ -103,7 +109,6 @@ def check_pfad():
             print("Der Pfad muss mit dem Laufwerk beginnen:\n"
                   "zB. 'D:\\order\\datei.pdf' ")
             print()
-
 
 def passwort_pdf_generator(pfad):
     """
@@ -136,6 +141,7 @@ def passwort_pdf_generator(pfad):
     # Zeitstempel vor dem Start
     start = datetime.datetime.now()
 
+    # Playback Audio starten
     sounds.audio_play("audio/typing.mp3")
 
     # Suche nach nummer zwischen 0 und 9 und füge sie als parameter damit wird die Länge der Permutation bestimmt
@@ -155,6 +161,12 @@ def passwort_pdf_generator(pfad):
                 # Berechne Differenz zwischen der fixierten Zeit bei Start und der am Ende, ergibt = Dauer
                 dauer = stop - start
 
+                # Stoppe das Playback
+                sounds.stop_audio_playback()
+
+                # AUDIO: Gratulation  Starten
+                sounds.audio_play("audio/congratulations.mp3")
+
                 # Ausgabe bei Erfolg
                 print("🌟" * 21 + " ERFOLG! " + "🌟" * 21 + "\n" + "_" * 100)
                 print("Das Passwort ist:", PASSWORD)
@@ -163,8 +175,6 @@ def passwort_pdf_generator(pfad):
                 print("Beendet:", stop)
                 print("Gesamtdauer:", dauer)
                 print("_" * 100)
-
-                sounds.stop_audio_playback()
 
                 with open("PASSWORD_HIER.txt", "w") as txt_file:
                     txt_file.writelines("Datei Pfad:" + "\n" + pfad + "\n" "PASSWORT:" + PASSWORD)
@@ -183,7 +193,10 @@ def passwort_pdf_generator(pfad):
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 def main():
     try:
+        sounds.audio_play("audio/wind.mp3")
         print(info.__doc__)
+        sounds.stop_audio_playback()
+
         PFAD = check_pfad()
         passwort_pdf_generator(PFAD)
         input("Zum Beenden beliebige Taste drücken: ")

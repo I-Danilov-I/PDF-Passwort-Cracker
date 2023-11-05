@@ -15,9 +15,11 @@ def audio_play(audio_pfad):
 
     def playback_function():
         print("LOG: Audio-Datei mit soundfile lesen")
+        print()
         audio_data, sample_rate = sf.read(audio_file, dtype='float32')
 
         print("LOG: Audiodaten mit sounddevice abspielen")
+        print()
         sd.play(audio_data, sample_rate)
         sd.wait()
 
