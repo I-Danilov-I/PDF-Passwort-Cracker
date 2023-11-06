@@ -5,6 +5,7 @@ import datetime
 
 # Modul: zum Arbeiten mit dem OS
 import sys
+import time
 
 # Modul: zum Lesen und Schreiben von PDF-Dateien
 import pikepdf
@@ -54,8 +55,8 @@ def auto_format_ausgabe_titel(schrift):
     print(f"{a * seitlich}{kl} {schrift:{lang}} {kr}{b * seitlich}")
     print(c * 100)
 
-def info():
 
+def info():
     """
     <<<<<<<<<<[Das Programm ist ausschließlich für Übungszwecke, verständnislos und lernzwecke gedacht! ]>>>>>>>>>>
 
@@ -72,6 +73,7 @@ def info():
      _________________________________________________________________________________________________________________
     """
 
+
 def check_pfad():
     # print("Log: [Check Pfad]")
     """
@@ -84,12 +86,7 @@ def check_pfad():
     while True:
         try:
             sounds.audio_play("audio/slam.mp3")
-            # Funktion: Als Par. wird String übergeben der dann formatiert wird und dann ausgeben
-            print()
-            print()
             auto_format_ausgabe_titel("Bitte geben sie den Pfad zu ihrer PDF-Datei")
-
-            # Hier wird der Pfad zu der Passwort geschützen PDF von Benutzer abgefragt
             pfad = input("EINGABE hier:")
             print()
             pfad = pfad.replace('"', "")
@@ -109,6 +106,7 @@ def check_pfad():
             print("Der Pfad muss mit dem Laufwerk beginnen:\n"
                   "zB. 'D:\\order\\datei.pdf' ")
             print()
+
 
 def passwort_pdf_generator(pfad):
     """
@@ -150,7 +148,6 @@ def passwort_pdf_generator(pfad):
         for PASSWORD in itertools.product(ZEICHEN, repeat=nummern):
             # Wandle Tupel in einen String
             PASSWORD = "".join(PASSWORD)
-
             # Try fängt die falsche passwort eingabe auf
             try:
                 # Öffne mit pikepdf Datei namens beispiel.pdf / als argument übergeben wir das Passwort als string
@@ -160,9 +157,6 @@ def passwort_pdf_generator(pfad):
                 stop = datetime.datetime.now()
                 # Berechne Differenz zwischen der fixierten Zeit bei Start und der am Ende, ergibt = Dauer
                 dauer = stop - start
-
-                # Stoppe das Playback
-                sounds.stop_audio_playback()
 
                 # AUDIO: Gratulation  Starten
                 sounds.audio_play("audio/congratulations.mp3")
@@ -178,9 +172,7 @@ def passwort_pdf_generator(pfad):
 
                 with open("PASSWORD_HIER.txt", "w") as txt_file:
                     txt_file.writelines("Datei Pfad:" + "\n" + pfad + "\n" "PASSWORT:" + PASSWORD)
-                    input("Zum beenden drücken sie beliebige taste: ")
-                    print()
-                    sys.exit("Passwort im Aktuellen Verzeichnis gespeichert! \n")
+                    return
 
             # Wenn Datei nicht geöffnet werden konnte, wiederhole den Vorgang
             except pikepdf.PasswordError:
@@ -191,18 +183,17 @@ def passwort_pdf_generator(pfad):
 
 
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-def main():
-    try:
-        sounds.audio_play("audio/wind.mp3")
-        print(info.__doc__)
-        sounds.stop_audio_playback()
 
-        PFAD = check_pfad()
-        passwort_pdf_generator(PFAD)
-        input("Zum Beenden beliebige Taste drücken: ")
-    except KeyboardInterrupt:
-        print()
-        sys.exit("KeyboardInterrupt. Beenden durch den Benutzer.")
+try:
+    print(info.__doc__)
+    PFAD = check_pfad()
+    passwort_pdf_generator(PFAD)
 
-
-main()
+    input("Zum Beenden beliebige Taste drücken: ")
+    sounds.audio_play("audio/closing.mp3")
+    print("Programm Wird beendet, suche die Tür... :)")
+    time.sleep(6)
+    sys.exit("Passwort im Aktuellen Verzeichnis gespeichert! \n")
+except KeyboardInterrupt:
+    print()
+    sys.exit("KeyboardInterrupt. Beenden durch den Benutzer.")
