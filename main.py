@@ -185,7 +185,10 @@ def passwort_pdf_generator(pfad):
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<[ HAUPTPROGRAMM ]>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 try:
+    sounds.audio_play("audio/wind.mp3")
     print(info.__doc__)
+    time.sleep(5)
+
     PFAD = check_pfad()
     passwort_pdf_generator(PFAD)
 
